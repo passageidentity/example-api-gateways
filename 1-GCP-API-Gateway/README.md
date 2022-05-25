@@ -4,29 +4,16 @@
 
 # Passage Google Cloud API Gateway Example
 
-This example uses Google's API Gateway to process authorization tokens (in the form of JWTs) to authenticate users.
+This example uses Google's API Gateway to process authorization tokens (in the form of JWTs) to authenticate users. For example purposes, this example uses Cloud Functions for the backend services and a React frontend, but a number of different services and frmaeworks can be used.
 
-In this example we digest the JSON response of the user data returned from the API Gateway endpoint. This gateway specifies a x-google-jwks_uri (Passage's JWKS endpoint) that are used to authenticate [JSON Web Tokens (JWTs)](https://jwt.io/) sent from the client.
-
-This flow can be described as follows:
-1. The JWT from the client is sent to the API Gateway.
-2. API Gateway fetches or uses cached JWKS provided from Passage's JWKS endpoint to grab the corresponding public key for this JWT by matching the `kid` value in the JWT header to the `kid` value in the corresponding JWK.
-3. If a corresponding JWK is found, it is converted into the public key that is then used to verify the JWT.
-4. If the JWT can be verified, the request is authenticated and is then sent to hit the Cloud Function.
-5. The Cloud Function then uses [Passage's Node SDK](https://www.npmjs.com/package/@passageidentity/passage-node) to fetch and return the user.
-6. The client consumes the returned user data.
-
-
-## Configure Your Environment Variables
-
-1. Copy the EXAMPLE.env file to your own .env file.
-2. Replace the example variables with your own Passage App ID (from the [Passage Console](https://console.passage.id)) and your GCP API Gateway URL. To configure an example GCP API Gateway, follow the Example Implementation below.
+JSON Web Tokens(JWTs) created with Passage are OIDC compliant and the API gateway can be configured to verify these authentication tokens with no code. Simply set up the API configuration to use Passage's [JWKS](https://tools.ietf.org/html/rfc7517). You can learn more about user authentication via GCP's API Gateway [here](https://cloud.google.com/api-gateway/docs/authenticating-users-jwt).
 
 
 ## Example Implementation
+
 ### (1) Create A Google Cloud Function
 This Google Cloud Function will act as our 'server' that will process authenticated requests brokered from GCP's API Gateway which we will set up in the next step.
-Below is an example of a Google Cloud Function you can use:
+Below is an example of a Google Cloud Function you can use to fetch the email address of the currently authenticated user.
 ```javascript
 const Passage = require("@passageidentity/passage-node");
 
@@ -122,6 +109,12 @@ Install dependencies
 npm install
 ```
 
+Configure environment variables so the app knows the correct API URL.
+
+1. Copy the EXAMPLE.env file to your own .env file.
+2. Replace the example variables with your own Passage App ID (from the [Passage Console](https://console.passage.id)) and your GCP API Gateway URL. To configure an example GCP API Gateway, follow the Example Implementation below.
+
+
 Start the app in development mode
 ```bash
 npm run start
@@ -131,5 +124,5 @@ The application will run on http://localhost:3000, which you can navigate to in 
 
 ## Authenticate Requests With Passage
 
-Navigate to [http://localhost:3000](http://localhost:3000) and see what it's like authenticating users using Passage with React via via Google's API Gateway!
+Navigate to [http://localhost:3000](http://localhost:3000) and see what it's like authenticating users using Passage with React via Google's API Gateway!
 
