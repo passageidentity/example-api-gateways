@@ -75,7 +75,7 @@ paths:
     get:
       operationId: getUser
       x-google-backend:
-        # the trigger URL is your Cloud Function's trigger URL
+        # Your Cloud Function's trigger URL (endpooint that calls the function)
         address: TRIGGER_URL_FROM_PREVIOUS_STEP
       # This 'security' section enables the security definition set up below.
       security:
@@ -86,7 +86,7 @@ paths:
     options:
       operationId: cors
       x-google-backend:
-        # the trigger URL is your Cloud Function's trigger URL
+        # Your Cloud Function's trigger URL (endpooint that calls the function)
         address: TRIGGER_URL_FROM_PREVIOUS_STEP
       responses:
         '200':
@@ -98,9 +98,9 @@ securityDefinitions:
     authorizationUrl: ""
     flow: "implicit"
     type: "oauth2"
-    # The 'iss' parameter of the JWT to be verified. In this case, your App ID.
+    # The 'iss' parameter of the JWT to be verified. In this case, your App ID found in Passage Console.
     x-google-issuer: "YOUR_PASSAGE_APP_ID"
-    # The JWKS URL Passage provides for your App ID.
+    # The JWKS URL Passage provides for your App ID found in Passage Console.
     x-google-jwks_uri: "https://auth.passage.id/v1/apps/YOUR_PASSAGE_APP_ID/.well-known/jwks.json"
     # The 'aud' parameter of the JWT to be verified. In this case, it's your auth_origin which can be found in your app settings in Passage Console.
     x-google-audiences: "YOUR_SERVER_URL" # i.e. "http://localhost:3000", etc.
