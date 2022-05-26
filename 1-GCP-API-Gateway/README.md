@@ -63,6 +63,7 @@ Next, we need to make sure that the Passage Node SDK is accessible from within t
 Once the Cloud Function has been created, be sure to copy its Trigger URL for use in the API Gateway config YML file in the net step.
 
 ### (2) Create A GCP API Gateway
+Create an API Gateway in the GCP console and set this file as your API Config, replacing the placeholder values:
 ```yml
 swagger: '2.0'
 info:
@@ -75,6 +76,7 @@ paths:
       operationId: getUser
       x-google-backend:
         address: TRIGGER_URL_FROM_PREVIOUS_STEP
+      # This 'security' section enables the security definition set up below.
       security:
         - passage: []
       responses:
@@ -89,17 +91,19 @@ paths:
           description: A successful response
 
 securityDefinitions:
+  # This 'passage' security definition enables the Passage JWKS endpoint to be used to verify JWTs.
   passage:
     authorizationUrl: ""
     flow: "implicit"
     type: "oauth2"
+    # The 'iss' parameter of the JWT to be verified. In this case, your App ID.
     x-google-issuer: "YOUR_PASSAGE_APP_ID"
+    # The JWKS URL Passage provides for your App ID.
     x-google-jwks_uri: "https://auth.passage.id/v1/apps/YOUR_PASSAGE_APP_ID/.well-known/jwks.json"
+    # The 'aud' parameter of the JWT to be verified. In this case, it's the URL where your app is hosted.
     x-google-audiences: "YOUR_SERVER_URL" # i.e. "http://localhost:3000", etc.
-
 ```
-
-Now that you've configured a GCP API Gateway to work with a Cloud Function, add the endpoint URL of the API Gateway to your .env file variable REACT_APP_GCP_GATEWAY_URL.
+Note that the securityDefinitions section is critical for the Api Gateway to verify JWTs using the JWKS endpoint. Now that you've configured a GCP API Gateway to work with a Cloud Function, add the endpoint URL of the API Gateway to your .env file variable REACT_APP_GCP_GATEWAY_URL.
 
 
 ## Building the Client
