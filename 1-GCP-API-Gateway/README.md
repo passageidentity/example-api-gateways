@@ -13,7 +13,7 @@ JSON Web Tokens(JWTs) created with Passage are OIDC compliant and the API gatewa
 
 ### (1) Create A Google Cloud Function
 This Google Cloud Function will act as our 'server' that will process authenticated requests brokered from GCP's API Gateway which we will set up in the next step.
-Below is an example of a Google Cloud Function you can use to fetch the email address of the currently authenticated user.
+Below is an example of a Google Cloud Function you can use to fetch the email address of the currently authenticated user ([click here to view example file](./supporting/cloud-function/script.js)):
 ```javascript
 const Passage = require("@passageidentity/passage-node");
 
@@ -50,7 +50,7 @@ const Passage = require("@passageidentity/passage-node");
 };
 ```
 
-Next, we need to make sure that the Passage Node SDK is accessible from within the Cloud Function:
+Next, we need to make sure that the Passage Node SDK is accessible from within the Cloud Function ([click here to view example file](./supporting/cloud-function/package.json)):
 ```json
 {
   "name": "user",

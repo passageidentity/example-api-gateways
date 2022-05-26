@@ -1,0 +1,32 @@
+swagger: '2.0'
+info:
+  title: user-gateway
+  description: Sample API Gateway with a Google Cloud Function backend
+  version: 1.0.0
+paths:
+  /user:
+    get:
+      operationId: getUser
+      x-google-backend:
+        address: TRIGGER_URL_FROM_PREVIOUS_STEP
+      security:
+        - passage: []
+      responses:
+        '200':
+          description: A successful response
+    options:
+      operationId: cors
+      x-google-backend:
+        address: TRIGGER_URL_FROM_PREVIOUS_STEP
+      responses:
+        '200':
+          description: A successful response
+
+securityDefinitions:
+  passage:
+    authorizationUrl: ""
+    flow: "implicit"
+    type: "oauth2"
+    x-google-issuer: "YOUR_PASSAGE_APP_ID"
+    x-google-jwks_uri: "https://auth.passage.id/v1/apps/YOUR_PASSAGE_APP_ID/.well-known/jwks.json"
+    x-google-audiences: "YOUR_SERVER_URL" # i.e. "http://localhost:3000", etc.
