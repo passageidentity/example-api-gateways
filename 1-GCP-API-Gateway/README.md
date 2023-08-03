@@ -56,7 +56,7 @@ Next, we need to make sure that the Passage Node SDK is accessible from within t
   "name": "user",
   "version": "0.0.1",
   "dependencies": {
-    "@passageidentity/passage-node": "^1.8.0"
+    "@passageidentity/passage-node": "^2.4.1"
   }
 }
 ```
